@@ -30,3 +30,10 @@ Zoom Clone using NodeJS, WebRTC and Websockets.
    "ignore": ["src/public/*"]
 8. home.pug 파일에서 mvpcss 적용되도록 link 추가
    link(rel="stylesheet", href="https://unpkg.com/mvp.css")
+
+## 1.2 WebSockets in Node JS
+
+1. "npm i ws"
+2. server.js 파일에서 http.createServer(app)을 통해 http 서버를 만들고
+3. new WebSocket.Server({server})을 통해 http 서버 위에 websocket 서버를 만듦
+4. 이제 동일한 포트에서 http 서버와 ws 서버를 모두 사용 가능
