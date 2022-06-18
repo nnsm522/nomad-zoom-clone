@@ -45,3 +45,11 @@ Zoom Clone using NodeJS, WebRTC and Websockets.
 2. app.js 에서 new WebSocket("경로")을 통해 서버와 연결
    - 경로는 http protocol이 아닌 ws protocol을 사용해야 함.
    - window.location.host를 통해 현재 브라우저의 위치를 받아옴.
+
+# 1.4 WebSocket Messages
+
+1. server.js에서 wss connection에 대한 callbackFn에서 Browser와 소통이 가능
+   - socket.on(event, callbackFn) : Browser의 open, close, message 등에 대한 eventListener
+   - socket.send(data) : Browser에 data를 전송
+2. app.js에서 socket.addEventListener(event, callbackFn) : Browser에서 server 상태를 감시
+3. app.js에서 socket.send(data) : Browser에서 server에 data를 전송
