@@ -17,12 +17,17 @@ const handleListen = () => console.log(`Listening on http://localhost:3000`);
 const server = http.createServer(app);
 const wss = new WebSocket.Server({ server });
 
+// connection된 socket을 저장하는 fake database
+const sockets = [];
+
 wss.on("connection", (socket) => {
   //connection된 frontend가 socket으로 전달됨
+  sockets.push(socket);
   console.log("Connected to Browser ✔");
   socket.on("close", () => console.log("Disconnected from the Browser"));
-  socket.on("message", (message) => console.log(message.toString("utf-8")));
-  socket.send("hello!!!");
+  socket.on("message", (message) => {
+    sockets.forEach((aSocket) => aSocket.send(message.toString()));
+  });
 });
 
 server.listen(3000, handleListen);
