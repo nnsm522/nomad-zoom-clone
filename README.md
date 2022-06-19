@@ -68,3 +68,13 @@ Zoom Clone using NodeJS, WebRTC and Websockets.
 3. server에서 nickname인지 new_message인지 구분할 수 있도록 JSON 형태로 message를 전송
    - message의 형식은 string이어야 하므로 JSON.stringify()로 가공 후 전송
    - messageForm과 nickForm 모두 사용할 것이므로 function으로 만듦
+
+## 1.8N icknames part Two
+
+1. server는 Browser에서 전달받은 message를 JSON.parse()를 통해 javascript Object로 변환
+   - JSON.stringify() : JSON을 string으로 바꿔줌
+   - JSON.parse() : string을 javascript Object로 바꿔줌
+2. socket에 nickname 데이터를 추가해서 nickname을 save하면 socket의 nickname이 변경되도록 함
+   - socket["nickname"] = "Anonymous" 로 초기값은 익명으로 설정
+   - message.type === "nickname" 이면 socket["nickname"] 을 변경
+3. message.type === "new_message" 이면 "nickname : new_message" 형태로 Browser에 전송
