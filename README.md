@@ -58,3 +58,13 @@ Zoom Clone using NodeJS, WebRTC and Websockets.
 2. app.js에서 document.querySelector("form") 을 통해 form을 불러오고, submit에 대한 eventListener를 생성
 3. eventListener의 callbackFn에서는 input.value를 socket.send(data)를 통해 서버로 전송
 4. server.js에서 connection된 socket을 array에 저장 후 Browser에서 보낸 message를 각 socket들에게 재전송
+
+## 1.7 Nicknames part One
+
+1. home.pug에서 nickname을 쓸 form을 추가로 생성
+   - message form과 구분하기 위해 id 사용
+   - app.js에서 querySelector도 id로 찾도록 수정
+2. nickForm에도 messageForm과 같이 eventListener 등록
+3. server에서 nickname인지 new_message인지 구분할 수 있도록 JSON 형태로 message를 전송
+   - message의 형식은 string이어야 하므로 JSON.stringify()로 가공 후 전송
+   - messageForm과 nickForm 모두 사용할 것이므로 function으로 만듦
