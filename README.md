@@ -98,3 +98,12 @@ Zoom Clone using NodeJS, WebRTC and Websockets.
    - import { Server } from "socket.io";
    - const wsServer = new Server(httpServer);
    - wsServer.on("connection", callbackFn);
+
+# 2.2 SocketIO is Amazing
+
+1. socket.io 에서는 websocket과 다르게 정해진 eventListener를 사용하지 않음
+   - socket.emit("costom_event", data, function) 형태로 eventListener를 원하는대로 만들어냄
+   - data는 Object 형태도 가능함
+   - function은 server에서 호출하고 front-end에서 실행될 함수임
+   - 받는 쪽에서는 socket.on("costom_event", callbackFn) 형태로 사용 가능
+   - callbackFn의 첫번째 인자는 data, 두번째 인자는 function임

@@ -1,3 +1,4 @@
+import { doesNotMatch } from "assert";
 import express from "express";
 import http from "http";
 // import WebSocket from "ws";
@@ -18,7 +19,12 @@ const httpServer = http.createServer(app);
 const wsServer = new Server(httpServer); //http 서버 위에 socketIO 서버 만듦
 
 wsServer.on("connection", (socket) => {
-  console.log(socket);
+  socket.on("enter_room", (msg, fn) => {
+    console.log(msg);
+    setTimeout(() => {
+      fn();
+    }, 3000);
+  });
 });
 
 /* 
