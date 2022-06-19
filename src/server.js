@@ -1,7 +1,7 @@
 import express from "express";
 import http from "http";
-import { parse } from "path";
-import WebSocket from "ws";
+// import WebSocket from "ws";
+import { Server } from "socket.io";
 
 const app = express();
 
@@ -14,10 +14,16 @@ app.get("/*", (req, res) => res.redirect("/")); //다른 주소 입력하면 /�
 
 const handleListen = () => console.log(`Listening on http://localhost:3000`);
 
-//같은 포트에서 http와 websocket을 동시에 사용 (http 서버 위에 ws 서버를 만듦)
-const server = http.createServer(app);
-const wss = new WebSocket.Server({ server });
+const httpServer = http.createServer(app);
+const wsServer = new Server(httpServer); //http 서버 위에 socketIO 서버 만듦
 
+wsServer.on("connection", (socket) => {
+  console.log(socket);
+});
+
+/* 
+//같은 포트에서 http와 websocket을 동시에 사용 (http 서버 위에 ws 서버를 만듦)
+const wss = new WebSocket.Server({ server });
 // connection된 socket을 저장하는 fake database
 const sockets = [];
 
@@ -34,12 +40,13 @@ wss.on("connection", (socket) => {
         sockets.forEach((aSocket) =>
           aSocket.send(`${socket.nickname} : ${message.payload}`)
         );
-        return;
+        break;
       case "nickname":
         socket["nickname"] = message.payload;
-        return;
+        break;
     }
   });
 });
+ */
 
-server.listen(3000, handleListen);
+httpServer.listen(3000, handleListen);

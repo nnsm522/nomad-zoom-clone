@@ -1,4 +1,6 @@
-const messageList = document.querySelector("ul");
+const socket = io();
+
+/* const messageList = document.querySelector("ul");
 const messageForm = document.querySelector("#message");
 const nickForm = document.querySelector("#nick");
 
@@ -38,3 +40,4 @@ function handleNickSubmit(event) {
 
 messageForm.addEventListener("submit", handleSubmit);
 nickForm.addEventListener("submit", handleNickSubmit);
+ */

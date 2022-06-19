@@ -2,6 +2,8 @@
 
 Zoom Clone using NodeJS, WebRTC and Websockets.
 
+# INTRODUCTION
+
 ## 0.2 Server Setup
 
 1. 폴더 생성 후 "npm init -y" 명령어를 통해 package.json 파일 생성 (main, script, keywords, author 삭제)
@@ -28,6 +30,8 @@ Zoom Clone using NodeJS, WebRTC and Websockets.
    - "ignore": ["src/public/*"]
 8. home.pug 파일에서 mvpcss 적용되도록 link 추가
    - link(rel="stylesheet", href="https://unpkg.com/mvp.css")
+
+# CHAT WITH WEBSOCKETS
 
 ## 1.2 WebSockets in Node JS
 
@@ -78,3 +82,19 @@ Zoom Clone using NodeJS, WebRTC and Websockets.
    - socket["nickname"] = "Anonymous" 로 초기값은 익명으로 설정
    - message.type === "nickname" 이면 socket["nickname"] 을 변경
 3. message.type === "new_message" 이면 "nickname : new_message" 형태로 Browser에 전송
+
+# SOCKET.IO
+
+## 2.1 Installing SocketIO
+
+1. npm install socket.io
+2. socket.io는 client에 /soket.io/socket.io.js 를 제공함
+   - socket.io는 websocket의 부가기능이 아니기 때문에 back-end와 front-end 모두 설치되어야 함
+   - websocket은 browser에 미리 설치되어있지만 socket.io는 설치되어있지 않음
+   - socket.io는 더 많은 기능이 있어서 websocket보다 무거움
+3. home.pug에서 /soket.io/socket.io.js를 불러옴
+   - script(src="/soket.io/socket.io.js")
+4. server.js에서 http서버 위에 socketIO 서버 만들고 connection event를 생성함
+   - import { Server } from "socket.io";
+   - const wsServer = new Server(httpServer);
+   - wsServer.on("connection", callbackFn);
