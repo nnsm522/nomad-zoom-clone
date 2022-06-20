@@ -114,3 +114,9 @@ Zoom Clone using NodeJS, WebRTC and Websockets.
 2. app.js에서 showRoom 함수를 만들고 submit 버튼을 누르면 roomName과 showRoom 함수를 server로 전송
 3. server.js에서는 socket.join(roomName)을 통해 room에 입장
 4. 입장 후 front-end에서 전달받은 showRoom 함수 호출
+
+# 2.5 Room Messages
+
+1. server.js에서 socket.to(roomName).emit("welcome")을 추가하여 이미 room에 있는 socket에 "welcome" event 전송
+   - socket.to("roomName").emit("event")를 통해 이미 room에 있는 socket에 event를 전송할 수 있음
+2. app.js에서 socket.on("welcome", Fn)을 통해 server에서 전송한 event에 대한 수행문 작성
