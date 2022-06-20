@@ -118,5 +118,15 @@ Zoom Clone using NodeJS, WebRTC and Websockets.
 # 2.5 Room Messages
 
 1. server.js에서 socket.to(roomName).emit("welcome")을 추가하여 이미 room에 있는 socket에 "welcome" event 전송
-   - socket.to("roomName").emit("event")를 통해 이미 room에 있는 socket에 event를 전송할 수 있음
+   - socket.to("roomName").emit("event")를 통해 이미 room에 있는 socket에 event를 전송할 수 있음 (자신을 제외한 모든 socket에 전송)
 2. app.js에서 socket.on("welcome", Fn)을 통해 server에서 전송한 event에 대한 수행문 작성
+
+# 2.6 Room Notifications
+
+1. room 입장 후 message를 submit하면 자신의 화면에는 You: message가 나오도록 작업
+   - socket.emit("new_message", input.value, roomName, Fn)
+   - 다른 화면에도 출력하려면 어떤 room인지 알 필요가 있어서 roomName도 함께 전송
+2. server.js에서 socket.on("new_message", Fn) 안에 다른 화면에도 message를 보여줄 수 있도록 message 전송
+   - socket.to(room).emit("new_message", msg)
+   - front-end에서 emit한 event name과 back-end에서 emit한 event name은 같아도 됨
+3. app.js에서 socket.on("new_message", Fn)을 통해 message를 출력
