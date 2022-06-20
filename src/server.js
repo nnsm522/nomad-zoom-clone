@@ -19,11 +19,12 @@ const httpServer = http.createServer(app);
 const wsServer = new Server(httpServer); //http 서버 위에 socketIO 서버 만듦
 
 wsServer.on("connection", (socket) => {
-  socket.on("enter_room", (msg, fn) => {
-    console.log(msg);
-    setTimeout(() => {
-      fn();
-    }, 3000);
+  socket.onAny((event) => {
+    console.log(`Socket Event: ${event}`);
+  });
+  socket.on("enter_room", (roomName, fn) => {
+    socket.join(roomName);
+    fn();
   });
 });
 

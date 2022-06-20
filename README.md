@@ -107,3 +107,10 @@ Zoom Clone using NodeJS, WebRTC and Websockets.
    - function을 전달하면 server에서 호출하고 front-end에서 실행됨 (function은 반드시 마지막 인자여야 함)
    - 받는 쪽에서는 socket.on("costom_event", callbackFn) 형태로 사용 가능
    - 여러 개의 data가 전달되면 전달한 순서대로 인자로 사용 가능
+
+# 2.4 Rooms
+
+1. home.pug에서 빈 h3 태그를 만듦
+2. app.js에서 showRoom 함수를 만들고 submit 버튼을 누르면 roomName과 showRoom 함수를 server로 전송
+3. server.js에서는 socket.join(roomName)을 통해 room에 입장
+4. 입장 후 front-end에서 전달받은 showRoom 함수 호출
