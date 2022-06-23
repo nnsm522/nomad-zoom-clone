@@ -105,6 +105,7 @@ Zoom Clone using NodeJS, WebRTC and Websockets.
    - socket.emit("costom_event", data) 형태로 eventListener를 원하는대로 만들어냄
    - data는 Object 형태도 가능하며, function도 가능함 (여러개를 전달할 수도 있음)
    - function을 전달하면 server에서 호출하고 front-end에서 실행됨 (function은 반드시 마지막 인자여야 함)
+   - front-end에서 함수를 호출 및 실행하지 않고 back-end에서 호출하는 이유는 front-end에서 전송한 data들이 제대로 back-end에서 받았는지 확인할 수 있기 때문
    - 받는 쪽에서는 socket.on("costom_event", callbackFn) 형태로 사용 가능
    - 여러 개의 data가 전달되면 전달한 순서대로 인자로 사용 가능
 
@@ -130,3 +131,9 @@ Zoom Clone using NodeJS, WebRTC and Websockets.
    - socket.to(room).emit("new_message", msg)
    - front-end에서 emit한 event name과 back-end에서 emit한 event name은 같아도 됨
 3. app.js에서 socket.on("new_message", Fn)을 통해 message를 출력
+
+# 2.7 Nicknames
+
+1. home.pug에 nickname 입력받을 input 생성
+2. app.js에서 nickname을 server로 전송
+3. server.js에서 socket에 nickname 저장
