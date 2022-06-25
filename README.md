@@ -149,3 +149,13 @@ Zoom Clone using NodeJS, WebRTC and Websockets.
 3. server.js에서 enter_room, disconnect 할 때 room_change event를 emit함
    - disconnecting event는 방을 떠나기 직전에 발생되므로 disconnect event로 만듦
 4. app.js에서 room_change event 발생 시 roomList가 화면에 나타나도록 함
+
+# 2.10 User Count
+
+1. wsServer.sockets.adapter.rooms에는 room에 접속한 sids 정보가 set() 형태로 존재
+   - set()은 중복된 값을 가질 수 없음
+2. wsServer.sockets.adapter.rooms.get(roomName)?.size를 통해 room에 접속한 sdis 개수를 가져옴
+3. countRoom 값을 enter_room, welcome, disconnecting event에 각각 전송
+   - disconnecting event에서는 countRoom 값이 1 줄어들어야 하므로 -1을 전송
+   - disconnect event에서는 이미 방을 떠났기 때문에 roomName을 가져올 수 없음
+4. app.js에서 countRoom 값을 표기
