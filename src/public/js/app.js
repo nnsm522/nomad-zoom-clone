@@ -51,6 +51,16 @@ socket.on("bye", (left) => {
 socket.on("new_message", (msg) => {
   addMessage(`${msg}`);
 });
+socket.on("room_change", (rooms) => {
+  const roomList = welcome.querySelector("ul");
+  //기존의 roomList를 지워야 중복되지 않음
+  roomList.innerHTML = "";
+  rooms.forEach((room) => {
+    const li = document.createElement("li");
+    li.innerText = room;
+    roomList.append(li);
+  });
+});
 
 /* const messageList = document.querySelector("ul");
 const messageForm = document.querySelector("#message");

@@ -138,10 +138,14 @@ Zoom Clone using NodeJS, WebRTC and Websockets.
 2. app.js에서 nickname을 server로 전송
 3. server.js에서 socket에 nickname 저장
 
-# 2.8 Room Count Part One
+# 2.8~2.9 Room Count
 
 1. wsServer.sockets.adapter에는 rooms와 sids 정보가 Map() 형태로 존재
    - sids : socket IDs
    - rooms : private rooms(sids와 동일) & public rooms
 2. Room Count를 하기 위해 public room의 key를 추출
    - rooms.forEach()를 통해 sids의 key와 비교
+   - room이 생성되고 삭제될 때마다 room list가 필요하므로 함수로 만들어둠
+3. server.js에서 enter_room, disconnect 할 때 room_change event를 emit함
+   - disconnecting event는 방을 떠나기 직전에 발생되므로 disconnect event로 만듦
+4. app.js에서 room_change event 발생 시 roomList가 화면에 나타나도록 함
