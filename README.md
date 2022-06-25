@@ -137,3 +137,11 @@ Zoom Clone using NodeJS, WebRTC and Websockets.
 1. home.pug에 nickname 입력받을 input 생성
 2. app.js에서 nickname을 server로 전송
 3. server.js에서 socket에 nickname 저장
+
+# 2.8 Room Count Part One
+
+1. wsServer.sockets.adapter에는 rooms와 sids 정보가 Map() 형태로 존재
+   - sids : socket IDs
+   - rooms : private rooms(sids와 동일) & public rooms
+2. Room Count를 하기 위해 public room의 key를 추출
+   - rooms.forEach()를 통해 sids의 key와 비교

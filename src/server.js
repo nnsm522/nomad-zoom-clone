@@ -18,7 +18,25 @@ const handleListen = () => console.log(`Listening on http://localhost:3000`);
 const httpServer = http.createServer(app);
 const wsServer = new Server(httpServer); //http 서버 위에 socketIO 서버 만듦
 
+function publicRooms() {
+  // const sids = wsServer.sockets.adapter.sids;
+  // const rooms = wsServer.sockets.adapter.rooms;
+  const {
+    sockets: {
+      adapter: { sids, rooms },
+    },
+  } = wsServer;
+  const publicRooms = [];
+  rooms.forEach((_, key) => {
+    if (sids.get(key) === undefined) {
+      publicRooms.push(key);
+    }
+  });
+  return publicRooms;
+}
+
 wsServer.on("connection", (socket) => {
+  console.log(wsServer.sockets.adapter);
   socket["nickname"] = "Anonymous";
   socket.onAny((event) => {
     console.log(`Socket Event: ${event}`);
