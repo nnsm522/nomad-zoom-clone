@@ -99,7 +99,7 @@ Zoom Clone using NodeJS, WebRTC and Websockets.
    - const wsServer = new Server(httpServer);
    - wsServer.on("connection", callbackFn);
 
-# 2.2 SocketIO is Amazing
+## 2.2 SocketIO is Amazing
 
 1. socket.io 에서는 websocket과 다르게 정해진 eventListener를 사용하지 않음
    - socket.emit("costom_event", data) 형태로 eventListener를 원하는대로 만들어냄
@@ -109,20 +109,20 @@ Zoom Clone using NodeJS, WebRTC and Websockets.
    - 받는 쪽에서는 socket.on("costom_event", callbackFn) 형태로 사용 가능
    - 여러 개의 data가 전달되면 전달한 순서대로 인자로 사용 가능
 
-# 2.4 Rooms
+## 2.4 Rooms
 
 1. home.pug에서 빈 h3 태그를 만듦
 2. app.js에서 showRoom 함수를 만들고 submit 버튼을 누르면 roomName과 showRoom 함수를 server로 전송
 3. server.js에서는 socket.join(roomName)을 통해 room에 입장
 4. 입장 후 front-end에서 전달받은 showRoom 함수 호출
 
-# 2.5 Room Messages
+## 2.5 Room Messages
 
 1. server.js에서 socket.to(roomName).emit("welcome")을 추가하여 이미 room에 있는 socket에 "welcome" event 전송
    - socket.to("roomName").emit("event")를 통해 이미 room에 있는 socket에 event를 전송할 수 있음 (자신을 제외한 모든 socket에 전송)
 2. app.js에서 socket.on("welcome", Fn)을 통해 server에서 전송한 event에 대한 수행문 작성
 
-# 2.6 Room Notifications
+## 2.6 Room Notifications
 
 1. room 입장 후 message를 submit하면 자신의 화면에는 You: message가 나오도록 작업
    - socket.emit("new_message", input.value, roomName, Fn)
@@ -132,13 +132,13 @@ Zoom Clone using NodeJS, WebRTC and Websockets.
    - front-end에서 emit한 event name과 back-end에서 emit한 event name은 같아도 됨
 3. app.js에서 socket.on("new_message", Fn)을 통해 message를 출력
 
-# 2.7 Nicknames
+## 2.7 Nicknames
 
 1. home.pug에 nickname 입력받을 input 생성
 2. app.js에서 nickname을 server로 전송
 3. server.js에서 socket에 nickname 저장
 
-# 2.8~2.9 Room Count
+## 2.8~2.9 Room Count
 
 1. wsServer.sockets.adapter에는 rooms와 sids 정보가 Map() 형태로 존재
    - sids : socket IDs
@@ -150,7 +150,7 @@ Zoom Clone using NodeJS, WebRTC and Websockets.
    - disconnecting event는 방을 떠나기 직전에 발생되므로 disconnect event로 만듦
 4. app.js에서 room_change event 발생 시 roomList가 화면에 나타나도록 함
 
-# 2.10 User Count
+## 2.10 User Count
 
 1. wsServer.sockets.adapter.rooms에는 room에 접속한 sids 정보가 set() 형태로 존재
    - set()은 중복된 값을 가질 수 없음
@@ -160,7 +160,7 @@ Zoom Clone using NodeJS, WebRTC and Websockets.
    - disconnect event에서는 이미 방을 떠났기 때문에 roomName을 가져올 수 없음
 4. app.js에서 countRoom 값을 표기
 
-# 2.11 Admin Panel
+## 2.11 Admin Panel
 
 1. npm i @socket.io/admin-ui
 2. const { instrument } = require("@socket.io/admin-ui");
@@ -173,3 +173,17 @@ Zoom Clone using NodeJS, WebRTC and Websockets.
    });
 4. instrument(wsServer, {auth: false});
 5. https://admin.socket.io/#/ 에서 ServerURL 입력 (http://localhost:3000)
+
+# VIDEO CALL
+
+## 3.0 User Video
+
+1. video 관련 back-end & front-end를 새로 만들어줌
+   - videoServer.js , videoApp.js , videoHome.pug
+   - 각 파일에서 경로 수정
+2. nodemon.json 수정
+   - "exec": "babel-node src/videoServer.js"
+3. videoHome.pug에서 video 화면 생성
+   - video#myFace(autoplay, playsinline, width="400", height="400")
+4. videoApp.js에서 video 화면에 video&audio 나오도록 getMedia() 함수 작성
+5. videoHome.pug에서 Mute, Camera Off 버튼 생성 후 videoApp.js에서 click event listener 작성
