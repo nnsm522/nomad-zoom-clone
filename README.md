@@ -159,3 +159,17 @@ Zoom Clone using NodeJS, WebRTC and Websockets.
    - disconnecting event에서는 countRoom 값이 1 줄어들어야 하므로 -1을 전송
    - disconnect event에서는 이미 방을 떠났기 때문에 roomName을 가져올 수 없음
 4. app.js에서 countRoom 값을 표기
+
+# 2.11 Admin Panel
+
+1. npm i @socket.io/admin-ui
+2. const { instrument } = require("@socket.io/admin-ui");
+   = import { instrument } from "@socket.io/admin-ui";
+3. const wsServer = new Server(httpServer, {
+   cors: {
+   origin: ["https://admin.socket.io"],
+   credentials: true,
+   },
+   });
+4. instrument(wsServer, {auth: false});
+5. https://admin.socket.io/#/ 에서 ServerURL 입력 (http://localhost:3000)

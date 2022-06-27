@@ -1,8 +1,8 @@
-import { doesNotMatch } from "assert";
 import express from "express";
 import http from "http";
 // import WebSocket from "ws";
 import { Server } from "socket.io";
+import { instrument } from "@socket.io/admin-ui";
 
 const app = express();
 
@@ -16,7 +16,18 @@ app.get("/*", (req, res) => res.redirect("/")); //다른 주소 입력하면 /�
 const handleListen = () => console.log(`Listening on http://localhost:3000`);
 
 const httpServer = http.createServer(app);
-const wsServer = new Server(httpServer); //http 서버 위에 socketIO 서버 만듦
+//http 서버 위에 socketIO 서버 만듦
+const wsServer = new Server(httpServer, {
+  //admin-ui demo
+  cors: {
+    origin: ["https://admin.socket.io"],
+    credentials: true,
+  },
+});
+
+instrument(wsServer, {
+  auth: false,
+});
 
 function publicRooms() {
   // const sids = wsServer.sockets.adapter.sids;
