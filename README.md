@@ -187,3 +187,11 @@ Zoom Clone using NodeJS, WebRTC and Websockets.
    - video#myFace(autoplay, playsinline, width="400", height="400")
 4. videoApp.js에서 video 화면에 video&audio 나오도록 getMedia() 함수 작성
 5. videoHome.pug에서 Mute, Camera Off 버튼 생성 후 videoApp.js에서 click event listener 작성
+
+## 3.1 Call Controls
+
+1. mute button, camera button 에 기능 삽입
+   - stream.getAudioTracks() , stream.getVideoTracks() 에서 forEach()를 통해 enabled 값을 바꿈
+2. navigator.mediaDevices.enumerateDevices(); 를 통해 연결된 device를 모두 가져옴 (devices)
+3. device 중에서 kind가 videoinput 인 것들만 가져옴 (cameras)
+4. videoHome.pug에서 select 태그 만들어주고 videoApp.js에서 cameras에 있는 목록을 option으로 넣어줌
