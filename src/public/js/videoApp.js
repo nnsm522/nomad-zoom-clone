@@ -11,14 +11,25 @@ let cameraOff = false;
 //Stream은 video&audio 결합된 것
 let myStream;
 
-async function getMedia() {
+async function getMedia(deviceId, muted, camreaOff) {
+  const initialConstrains = {
+    audio: true,
+    video: { facingMode: "user" },
+  };
+  const cameraConstrains = {
+    audio: true,
+    video: { deviceId: { exact: deviceId } },
+  };
   try {
-    myStream = await navigator.mediaDevices.getUserMedia({
-      audio: true,
-      video: true,
-    });
+    myStream = await navigator.mediaDevices.getUserMedia(
+      deviceId ? cameraConstrains : initialConstrains
+    );
+    myStream.getAudioTracks().forEach((track) => (track.enabled = !muted));
+    myStream.getVideoTracks().forEach((track) => (track.enabled = !cameraOff));
     myFace.srcObject = myStream;
-    await getCameras();
+    if (!deviceId) {
+      await getCameras();
+    }
   } catch (e) {
     console.log(e);
   }
@@ -28,10 +39,14 @@ async function getCameras() {
   try {
     const devices = await navigator.mediaDevices.enumerateDevices();
     const cameras = devices.filter((device) => device.kind === "videoinput");
+    const currentCamera = myStream.getVideoTracks()[0];
     cameras.forEach((camera) => {
       const option = document.createElement("option");
       option.value = camera.deviceId;
       option.innerText = camera.label;
+      if (currentCamera.label == camera.label) {
+        option.selected = true;
+      }
       cameraSelect.appendChild(option);
     });
   } catch (e) {
@@ -40,9 +55,6 @@ async function getCameras() {
 }
 
 muteBtn.addEventListener("click", () => {
-  myStream
-    .getAudioTracks()
-    .forEach((track) => (track.enabled = !track.enabled));
   if (!muted) {
     muteBtn.innerText = "UnMute";
     muted = true;
@@ -50,11 +62,9 @@ muteBtn.addEventListener("click", () => {
     muteBtn.innerText = "Mute";
     muted = false;
   }
+  myStream.getAudioTracks().forEach((track) => (track.enabled = !muted));
 });
 cameraBtn.addEventListener("click", () => {
-  myStream
-    .getVideoTracks()
-    .forEach((track) => (track.enabled = !track.enabled));
   if (!cameraOff) {
     cameraBtn.innerText = "Turn Camera On";
     cameraOff = true;
@@ -62,6 +72,10 @@ cameraBtn.addEventListener("click", () => {
     cameraBtn.innerText = "Turn Camera Off";
     cameraOff = false;
   }
+  myStream.getVideoTracks().forEach((track) => (track.enabled = !cameraOff));
+});
+cameraSelect.addEventListener("input", async () => {
+  await getMedia(cameraSelect.value, muted, cameraOff);
 });
 
 getMedia();

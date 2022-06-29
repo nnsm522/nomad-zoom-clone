@@ -195,3 +195,14 @@ Zoom Clone using NodeJS, WebRTC and Websockets.
 2. navigator.mediaDevices.enumerateDevices(); 를 통해 연결된 device를 모두 가져옴 (devices)
 3. device 중에서 kind가 videoinput 인 것들만 가져옴 (cameras)
 4. videoHome.pug에서 select 태그 만들어주고 videoApp.js에서 cameras에 있는 목록을 option으로 넣어줌
+
+## 3.2 Camera Switch
+
+1. cameraSelect에 input eventListener 적용
+   - 변경된 카메라로 getMedia() 재호출 하기 위해 cameraSelect.value를 인자로 넘김
+2. getMedia() 함수에서 최초 실행에서는 cameraSelect.value가 넘어오지 않으므로 조건문 적용
+   - deviceId가 없으면 전면 카메라 작동
+   - deviceId가 있으면 해당 deviceId와 일치하는 video 작동
+3. getCameras() 함수가 카메라 바뀔 때마다 실행되므로 deviceId가 없을 때(최초 실행)만 작동하도록 설정
+4. 카메라 선택을 바꾸면 mute와 cameraOff가 풀리는 현상이 발견되어 수정
+   - muted 값과 cameraOff 값도 전달받아서 getMedia() 함수 호출될 때마다 mute, cameraOff 설정을 잡아줌
