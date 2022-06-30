@@ -5,6 +5,11 @@ const muteBtn = document.getElementById("mute");
 const cameraBtn = document.getElementById("camera");
 const cameraSelect = document.getElementById("cameras");
 
+const call = document.getElementById("call");
+call.hidden = true;
+
+let roomName;
+
 let muted = false;
 let cameraOff = false;
 
@@ -78,4 +83,26 @@ cameraSelect.addEventListener("input", async () => {
   await getMedia(cameraSelect.value, muted, cameraOff);
 });
 
-getMedia();
+// welcome form
+const welcome = document.getElementById("welcome");
+
+welcomeForm = welcome.querySelector("form");
+welcomeForm.addEventListener("submit", (e) => {
+  e.preventDefault();
+  const input = welcomeForm.querySelector("input");
+  socket.emit("join_room", input.value, startMedia);
+  roomName = input.value;
+  input.value = "";
+});
+
+function startMedia() {
+  welcome.hidden = true;
+  call.hidden = false;
+  getMedia();
+}
+
+//Socket Code
+
+socket.on("welcome", () => {
+  console.log("Somebody join");
+});

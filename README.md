@@ -206,3 +206,24 @@ Zoom Clone using NodeJS, WebRTC and Websockets.
 3. getCameras() 함수가 카메라 바뀔 때마다 실행되므로 deviceId가 없을 때(최초 실행)만 작동하도록 설정
 4. 카메라 선택을 바꾸면 mute와 cameraOff가 풀리는 현상이 발견되어 수정
    - muted 값과 cameraOff 값도 전달받아서 getMedia() 함수 호출될 때마다 mute, cameraOff 설정을 잡아줌
+
+## 3.3 Introduction to WebRTC
+
+1. WebRTC : Web Real Time Communication
+2. pear to pear communication이 가능
+3. Browser은 configuration, setting, location, firewall, router 등을 서버로 전달하고 서버는 그 정보를 다른 Browser에 전달
+4. 영상, 오디오, 텍스트를 WebRTC로 전달 가능
+
+## 3.4 Rooms
+
+1. videoHome.pug에서 roomName을 입력할 input Form 생성
+2. videoApp.js에서 roomName을 입력하면 getMedia() 함수 실행되도록 설정
+   - welcome form과 기존의 call(div)을 불러와 hidden 설정
+   - welcome form에 submit eventListener 등록
+   - roomName(input.value)을 socket.emit()으로 server에 넘겨줌
+   - roomName을 입력하면 welcome form을 감추고 call을 보여주는 함수도 server에 넘겨줌
+3. server에서 socket.on()을 통해 제어
+   - socket.join(roomName)으로 room 생성
+   - 받아온 function 호출 (app에서 실행)
+   - socket.to(roomName).emit("welcome")을 통해 다른 사람이 접속했을 때 수행문 작성
+4. videoApp.js에서 socket.on("welcome")으로 안내 문구 발송
