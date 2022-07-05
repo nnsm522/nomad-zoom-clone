@@ -227,3 +227,22 @@ Zoom Clone using NodeJS, WebRTC and Websockets.
    - 받아온 function 호출 (app에서 실행)
    - socket.to(roomName).emit("welcome")을 통해 다른 사람이 접속했을 때 수행문 작성
 4. videoApp.js에서 socket.on("welcome")으로 안내 문구 발송
+
+## 3.5 Offers
+
+1. offer를 생성하기 위해 makeConnection() 함수 생성
+   - myPeerConnection 변수에 new RTCPeerConnection() 대입
+   - myStream.getTracks().forEach((track) => myPeerConnection.addTrack(track, myStream));
+2. makeConnection() 함수가 getMedia() 이후에 호출되도록 작성
+   - room에 입장하면 startMedia() 함수가 호출되고
+   - startMedia() 함수 안에서 getMedia() 함수가 호출됨
+   - 그 후에 makeConnection() 함수가 호출되도록 getMedia() 함수를 await으로 작성
+3. socket.on("welcome", fn) 에서 offer 생성 후 서버로 전송
+   - 자신의 offer를 생성하는 과정임
+   - const offer = await myPeerConnection.createOffer();
+   - myPeerConnection.setLocalDescription(offer);
+   - socket.emit("offer", offer, roomName);
+4. server에서 socket.on("offer", fn)으로 offer를 받고 다시 그 offer를 room에 전송
+   - 자신의 offer를 타인에게 전송하는 과정임
+   - socket.to(roomName).emit("offer", offer);
+5. videoApp.js에서 socket.on("oofer", fn)으로 상대방 offer를 받음

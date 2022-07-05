@@ -15,8 +15,9 @@ let cameraOff = false;
 
 //Stream은 video&audio 결합된 것
 let myStream;
+let myPeerConnection;
 
-async function getMedia(deviceId, muted, camreaOff) {
+async function getMedia(deviceId, muted, cameraOff) {
   const initialConstrains = {
     audio: true,
     video: { facingMode: "user" },
@@ -95,14 +96,29 @@ welcomeForm.addEventListener("submit", (e) => {
   input.value = "";
 });
 
-function startMedia() {
+async function startMedia() {
   welcome.hidden = true;
   call.hidden = false;
-  getMedia();
+  await getMedia();
+  makeConnection();
 }
 
 //Socket Code
-
-socket.on("welcome", () => {
-  console.log("Somebody join");
+//peer A
+socket.on("welcome", async () => {
+  const offer = await myPeerConnection.createOffer();
+  myPeerConnection.setLocalDescription(offer);
+  socket.emit("offer", offer, roomName);
 });
+//peer B
+socket.on("offer", (offer) => {
+  console.log(`peer B : ${offer}`);
+});
+
+// RTC Code
+function makeConnection() {
+  myPeerConnection = new RTCPeerConnection();
+  myStream
+    .getTracks()
+    .forEach((track) => myPeerConnection.addTrack(track, myStream));
+}
