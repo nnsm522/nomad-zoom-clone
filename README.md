@@ -245,4 +245,22 @@ Zoom Clone using NodeJS, WebRTC and Websockets.
 4. server에서 socket.on("offer", fn)으로 offer를 받고 다시 그 offer를 room에 전송
    - 자신의 offer를 타인에게 전송하는 과정임
    - socket.to(roomName).emit("offer", offer);
-5. videoApp.js에서 socket.on("oofer", fn)으로 상대방 offer를 받음
+5. videoApp.js에서 socket.on("offer", fn)으로 상대방 offer를 받음
+
+## 3.6 Answers
+
+1. 상대방 offer를 받은 후 myPeerConnection.setRemoteDescription(offer)
+   - 상대방 offer를 remoteDescription에 등록
+   - peerB 입장에서 myPeerConnection이 생기기 전에 socket.on()이 먼저 실행되므로 startMedia() 함수를 await으로 변경 (startMedia() 함수는 initCall() 함수로 이름 변경)
+   - await으로 변경하는 과정에서 socket에서 함수를 호출하지 않고, roomName 입력 후 submit하면서 실행되도록 밖으로 빼줌
+2. peerB는 myPeerConnection.createAnswer()를 통해 answer 생성해서 server로 전송
+   - answer를 myPeerConnection.setLocalDescription(answer)로 등록
+   - socket.emit("answer", answer, roomName)으로 answer과 roomName을 함께 전송
+3. server에서는 peerB에게 받은 answer를 peerA에게 전송
+   - socket.on("answer", (answer, roomName) => {
+     socket.to(roomName).emit("answer", answer);
+     });
+4. videoApp.js 에서 전달받은 answer를 setRemoteDescription(answer)로 등록
+   - socket.on("answer", (answer) => {
+     myPeerConnection.setRemoteDescription(answer);
+     });
