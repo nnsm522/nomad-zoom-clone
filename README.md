@@ -264,3 +264,26 @@ Zoom Clone using NodeJS, WebRTC and Websockets.
    - socket.on("answer", (answer) => {
      myPeerConnection.setRemoteDescription(answer);
      });
+
+## 3.7 IceCandidate
+
+1. offer와 answer를 주고받은 후 peer-to-peer 양쪽에서 IceCandidate event를 실행함
+2. videoApp.js에서 myPeerConnection이 생성된 후 icecandidate event listener 등록
+   - myPeerConnection은 makeConnection() 함수 안에서 생성됨
+   - makeConnection() 함수는 initCall() 함수 안에서 실행됨
+   - initCall() 함수는 submit event listener 에서 실행됨
+   - 즉, roomName을 입력해서 방에 들어가면 myPeerConnection이 생성된 후 icecandidate listener가 등록됨
+   - icecandidate는 offer(answer)를 전송한 후 생김
+3. icecandidate event listener는 server로 data.candidate와 roomName을 전송
+4. server는 받은 candidate를 roomName 안의 socket에게 전송
+   - socket.on("ice", (ice, roomName) => {
+     socket.to(roomName).emit("ice", ice);
+     });
+5. videoApp.js는 server에게 받은 candidate를 myPeerConnection에 등록
+   - socket.on("ice", (ice) => {
+     console.log("received candidate");
+     myPeerConnection.addIceCandidate(ice);
+     });
+6. icecandidate를 주고받았으니 이제 stream을 주고받도록 addstream event listener 생성
+   - myPeerConnection.addEventListener("addstream", fn(data));
+7. videoHome.pug에 video tag 추가 후 addstream event listener에서 상대 화면 나오도록 설정
