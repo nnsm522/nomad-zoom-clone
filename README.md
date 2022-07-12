@@ -287,3 +287,16 @@ Zoom Clone using NodeJS, WebRTC and Websockets.
 6. icecandidate를 주고받았으니 이제 stream을 주고받도록 addstream event listener 생성
    - myPeerConnection.addEventListener("addstream", fn(data));
 7. videoHome.pug에 video tag 추가 후 addstream event listener에서 상대 화면 나오도록 설정
+
+## 3.8 Senders
+
+1. Sender는 우리의 peer로 보내진 media stream track을 컨트롤하게 해줌
+2. camera를 바꿀 때 실행되는 cameraSelect event listener 함수를 수정함
+3. 바뀐(선택된) videoTrack을 videoTrack 변수에 넣음
+   - const videoTrack = myStream.getVideoTracks()[0];
+4. videoSender 변수에 video sender 넣음
+   - const videoSender = myPeerConnection
+     .getSenders()
+     .find((sender) => sender.track.kind === "video");
+5. videoSender의 track을 videoTrack으로 변경
+   - videoSender.replaceTrack(videoTrack);
