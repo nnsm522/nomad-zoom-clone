@@ -300,3 +300,27 @@ Zoom Clone using NodeJS, WebRTC and Websockets.
      .find((sender) => sender.track.kind === "video");
 5. videoSender의 track을 videoTrack으로 변경
    - videoSender.replaceTrack(videoTrack);
+
+## 3.9 STUN
+
+1. 다른 네트워크에 있는 사용자끼리 연결하기 위해 STUN server가 필요함
+2. STUN server는 컴퓨터가 공용 IP 주소를 찾게 해줌
+3. 강의에서는 구글이 제공하는 STUN server 사용
+   - myPeerConnection = new RTCPeerConnection({
+     iceServers: [
+     {
+     urls: [
+     "stun:stun.l.google.com:19302",
+     "stun:stun1.l.google.com:19302",
+     "stun:stun2.l.google.com:19302",
+     "stun:stun3.l.google.com:19302",
+     "stun:stun4.l.google.com:19302",
+     ],
+     },
+     ],
+     });
+
+## 3.11 Data Channels
+
+1. videoApp.js 에서 myDataChannel 변수 생성
+2. peer A 일 때 myDatachannel

@@ -17,11 +17,17 @@ html(lang="ko")
           button Enter room
       div#call
         div#myStream
-          video#myFace(autoplay, playsinline, width="400", height="400")
-          button#mute Mute
-          button#camera Turn Camera Off
+          video#myFace(autoplay, playsinline, width="400", height="300", style="margin-right: 24px")
+          video#peerFace(autoplay, playsinline, width="400", height="300")
           select#cameras
-          video#peerFace(autoplay, playsinline, width="400", height="400")
+          button#mute(style="margin-right: 24px") Mute
+          button#camera(style="margin-right: 24px") Turn Camera Off
+          button#leave leave
+        div#chat(style="border: solid 1px gray; height: 530px")
+          form#msg
+            input(placeholder="message", required, type="text")
+            button Send
+          ul(style="max-height: 320px; overflow: auto;")
         
     script(src="/socket.io/socket.io.js")
     script(src="/public/js/videoApp.js")
